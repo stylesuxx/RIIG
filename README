@@ -1,0 +1,28 @@
+-+= Ruby Imageboard Image Grabber +=-
+
+Grabbs Images from imageboards like 4chan.
+
+Features:
+ * Saves each thread in seperate directory
+ * Resumes only with new pics if invoked multiple times on same thread
+ * Create zip Archive on the fly
+
+Supported imageboards:
+ * 4chan
+
+TODO:
+ * add more imageboards
+
+Usage: riig.rb [options] url1 url2 ...
+
+Specific options:
+    -o, --output DIRECTORY           Output DIRECTORY
+    -z, --zip                        Zip the images
+        --del                        Delete images after execution
+    -v, --verbose                    Output more information
+
+Common options:
+    -h, --help                       Display this screen
+        --version                    Show programm version
+
+If you have found bugs or have feature requests feel free to contact me on github (https://github.com/stylesuxx/RIIG) or via mail (stylesuxx@gmail.com).
