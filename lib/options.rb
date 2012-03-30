@@ -22,25 +22,23 @@ class OptionParser
       opts.on('-z', '--zip', 'Zip the images') do
 	options.zip = true
       end
-  
-      opts.on('--del', 'Delete images after execution') do
-	options.del = true
-      end
       
       opts.on('-v', '--verbose', 'Output more information') do
 	options.verbose = true
+      end
+      
+      opts.on('--delete', 'Delete images after execution') do
+	options.del = true
       end
       
       opts.separator ""
       opts.separator "Common options:"
       opts.on('-h', '--help', 'Display this screen') do
 	puts opts
-	exit
       end
   
       opts.on('--version', 'Show programm version') do
 	puts "0.1"
-	exit
       end
   
     end
