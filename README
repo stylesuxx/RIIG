@@ -1,11 +1,11 @@
--+= Ruby Imageboard Image Grabber +=-
+-+= Ruby Imageboard Image Grabber =+-
 
 Grabbs Images from imageboards like 4chan.
 
 Features:
- * Saves each thread in seperate directory
+ * Saves images from different threads in seperate directories
  * Resumes only with new pics if invoked multiple times on same thread
- * Create zip Archive on the fly
+ * Create zip Archive of the saved images
 
 Supported imageboards:
  * 4chan
