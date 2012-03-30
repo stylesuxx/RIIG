@@ -74,6 +74,14 @@ class ImageWriter
     end
   end
   
+  def del()
+    
+  end
+  
+  def zip()
+    
+  end
+  
   def saveImage(path, filename)
     if !File.exist? filename
       Net::HTTP.start(@domain) do |http|
