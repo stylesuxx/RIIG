@@ -33,17 +33,14 @@ ARGV.each do |url|
   end
   
   # Output Stats
-  #if iWriter.new
   !iWriter.new ? tmp = "new " : tmp = ""
-    puts "Saved #{iWriter.count} #{tmp}images to #{iWriter.dir}" if iWriter.count > 0
-    puts "No #{tmp}images in thread #{iWriter.thread}" if iWriter.count == 0
-  #else
-    #puts "Saved #{iWriter.count} new images to #{iWriter.dir}" if iWriter.count > 0
-    #puts "No new images in thread #{iWriter.thread}" if iWriter.count == 0
-  #end
+  puts "Saved #{iWriter.count} #{tmp}images to #{iWriter.dir}" if iWriter.count > 0
+  puts "No #{tmp}images in thread #{iWriter.thread}" if iWriter.count == 0
   
   # Zip images
+  iWriter.zip if options.zip
   
   # Delete images
+  iWriter.del if options.del
   
 end # each url
