@@ -1,8 +1,10 @@
-╔═══════════════════════════════╗
-║ Ruby Imageboard Image Grabber ║
-╚═══════════════════════════════╝
-
-Grabbs Images from imageboards like 4chan.
+╔══════════════════════════════════════╗
+║ Ruby Imageboard Image Grabber (RIGG) ║
+╚╦═════════════════════════════════════╝
+ ║ Grabbs Images from imageboards like 4chan.
+ ║ 
+ ║ Author: Chris (stylesuxx@gmail.com) 
+ ╙
 
 
 ╔═════════════╗
@@ -11,13 +13,13 @@ Grabbs Images from imageboards like 4chan.
  ╠ Saves images from different threads in seperate directories
  ╠ Resumes only with new pics if invoked multiple times on same thread
  ╠ Create zip Archive of the saved images
-
+ ╙
 
 ╔══════════════════════════╗
 ║ 2. Supported imageboards ║
 ╚╦═════════════════════════╝
  ╠ 4chan
-
+ ╙
 
 ╔══════════╗
 ║ 3. Usage ║
@@ -33,7 +35,7 @@ Grabbs Images from imageboards like 4chan.
  ╠ Common options:
  ║   -h, --help                       Display this screen
  ║       --version                    Show programm version
-
+ ╙
 
 ╔═════════════════╗
 ║ 4. Requirements ║
@@ -41,12 +43,12 @@ Grabbs Images from imageboards like 4chan.
  ╠ Linux
  ╠ Ruby (>= 1.9)
  ╠ rubyzip gem - if you want to zip your files
-
+ ╙
 
 ╔═════════╗
 ║ 5. TODO ║
 ╚╦════════╝
  ╠ add more imageboards
-
+ ╙
 
 If you have found bugs or have feature requests feel free to contact me on github (https://github.com/stylesuxx/RIIG) or via mail (stylesuxx@gmail.com).
