@@ -2,6 +2,7 @@ require 'optparse'
 require 'ostruct'
 
 # Set the options according to commandline arguments
+# Catches invalid arguments and missing options
 class OptionParser
   
   def self.parse(args)
@@ -10,6 +11,7 @@ class OptionParser
     options.zip = false
     options.del = false
     options.verbose = false
+    options.help = false
 	    
     opts = OptionParser.new do |opts|
       opts.banner = "Usage: riig.rb [options] url1 url2 ..."
@@ -36,6 +38,7 @@ class OptionParser
       opts.separator "Common options:"
       opts.on('-h', '--help', 'Display this screen') do
 	puts opts
+	options.help = true
       end
   
       opts.on('--version', 'Show programm version') do
@@ -47,7 +50,7 @@ class OptionParser
     begin
       opts.parse!(args)
       options
-    # If invalid option or argument is missing - display error message and help
+    # Catch invalid arguments and missing options - display error message and help
     rescue Exception => e
       puts e
       puts opts
