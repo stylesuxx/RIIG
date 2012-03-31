@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-
-# Ruby Imageboard Image Grabber (RIIG)
-# 
-# Author: Chris (chris@1337.af)
-
+########################################
+# Ruby Imageboard Image Grabber (RIIG) #
+#                                      #
+# Author: Chris (stylesuxx@gmail.com)  #
+########################################
 require './lib/url.rb'
 require './lib/imagewriter.rb'
 require './lib/options.rb'
 
-# Set the commandline options - display help in case of fuckup
+# Set the commandline options - displays help in case of fuckup
 options = OptionParser.parse(ARGV)
 
 # Do for each url given as commandline argument
@@ -19,12 +19,7 @@ ARGV.each do |url|
   # If URL valid (valid board & valid formatting)
   if link.valid
     iWriter = ImageWriter.new(options.output, link.board, url, options.verbose)
-    if iWriter.valid 
-      iWriter.saveImages
-    else
-      puts "Directory does not exist or you have no write permissions"
-      exit
-    end
+    iWriter.valid ? iWriter.saveImages : abort("Directory does not exist or you do not have write permissions")
     
   # If URL NOT valid
   else
@@ -40,7 +35,7 @@ ARGV.each do |url|
   # Zip images
   iWriter.zip if options.zip
   
-  # Delete images
-  iWriter.del if options.del
+  # Delete images only if files have been zipped
+  iWriter.del if options.del && options.zip
   
-end # each url
+end if !options.help # each url
