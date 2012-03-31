@@ -3,39 +3,47 @@
 ╚═══════════════════════════════╝
 
 Grabbs Images from imageboards like 4chan.
-
-1. Features ║
-═╦══════════╝
+╔═════════════╗
+║ 1. Features ║
+╚╦════════════╝
  ╠ Saves images from different threads in seperate directories
  ╠ Resumes only with new pics if invoked multiple times on same thread
  ╠ Create zip Archive of the saved images
 
-2. Supported imageboards ║
-═╦═══════════════════════╝
+
+╔══════════════════════════╗
+║ 2. Supported imageboards ║
+╚╦═════════════════════════╝
  ╠ 4chan
 
-3. Usage ║
-═════════╝
-riig.rb [options] url1 url2 ...
 
-Specific options:
-    -o, --output DIRECTORY           Output DIRECTORY
-    -z, --zip                        Zip the images
-    -v, --verbose                    Output more information
-        --delete                     Delete images after execution
+╔══════════╗
+║ 3. Usage ║
+╚╦═════════╝
+ ╠ riig.rb [options] url1 url2 ...
+ ║
+ ╠ Specific options:
+ ║   -o, --output DIRECTORY           Output DIRECTORY
+ ║   -z, --zip                        Zip the images
+ ║   -v, --verbose                    Output more information
+ ║       --delete                     Delete images after execution
+ ║
+ ╠ Common options:
+ ║   -h, --help                       Display this screen
+ ║       --version                    Show programm version
 
-Common options:
-    -h, --help                       Display this screen
-        --version                    Show programm version
 
-4. Requirements ║
-═╦══════════════╝
+╔═════════════════╗
+║ 4. Requirements ║
+╚╦════════════════╝
  ╠ Linux
  ╠ Ruby (>= 1.9)
  ╠ rubyzip gem - if you want to zip your files
 
-5. TODO ║
-═╦══════╝
+
+╔═════════╗
+║ 5. TODO ║
+╚╦════════╝
  ╠ add more imageboards
 
 
