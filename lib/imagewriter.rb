@@ -1,11 +1,13 @@
 require 'net/http'
 require 'uri'
+require 'fileutils'
 
 class ImageWriter
   attr_reader :url, :dir, :board, :valid, :new, :thread, :links, :domain, :count, :verbose
   
   def initialize(dir, board, url, verbose)
     @dir = dir
+    @basedir = dir 
     @url = url
     @board = board
     @valid = true
@@ -74,12 +76,29 @@ class ImageWriter
     end
   end
   
+  # delete folder
   def del()
-    
+    FileUtils.rm_rf @dir
+    puts "Images deleted from: #{@dir}"
   end
   
+  # create zipfile
   def zip()
+    require 'zip/zip'
+    zipfile = "#{@basedir + @board}_#{@thread}.zip"
     
+    # Delete zipfile if there already is one
+    if File.exist? zipfile
+      File.delete(zipfile)
+    end
+    files = Dir.entries(@dir)
+    Zip::ZipFile.open(zipfile, Zip::ZipFile::CREATE) do |zipfile|
+      zipfile.mkdir("#{@board}_#{@thread}/")
+      files.each do |file|
+	zipfile.add(@board + '_' + @thread + '/' + file, @dir+'/'+file) if file != "." && file != ".." 
+      end
+    end
+    puts "Zip file created: #{zipfile}" if verbose
   end
   
   def saveImage(path, filename)
