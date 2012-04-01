@@ -2,7 +2,7 @@ require 'optparse'
 require 'ostruct'
 
 # Set the options according to commandline arguments
-# Catches invalid arguments and missing options
+# Catches invalid arguments, missing options and displays helptext
 class OptionParser
   
   def self.parse(args)
@@ -49,8 +49,8 @@ class OptionParser
     
     begin
       opts.parse!(args)
-      options
-    # Catch invalid arguments and missing options - display error message and help
+      return options
+    # Catch invalid arguments and missing options - display error message, help and exit
     rescue Exception => e
       puts e
       puts opts
