@@ -18,11 +18,19 @@
 ╔══════════════════════════╗
 ║ 2. Supported imageboards ║
 ╚╦═════════════════════════╝
- ╠ 4chan
+ ╠ 4chan.org
+ ╠ 2chan.net
+ ╙
+
+╔═════════════════╗
+║ 3. Installation ║
+╚╦════════════════╝
+ ╠ clone this repo
+ ╠ run riig.rb on the commandline
  ╙
 
 ╔══════════╗
-║ 3. Usage ║
+║ 4. Usage ║
 ╚╦═════════╝
  ╠ riig.rb [options] url1 url2 ...
  ║
@@ -38,7 +46,7 @@
  ╙
 
 ╔═════════════════╗
-║ 4. Requirements ║
+║ 5. Requirements ║
 ╚╦════════════════╝
  ╠ Linux
  ╠ Ruby (>= 1.9)
@@ -46,9 +54,9 @@
  ╙
 
 ╔═════════╗
-║ 5. TODO ║
+║ 6. TODO ║
 ╚╦════════╝
- ╠ add more imageboards
+ ╠ add more imageboards - feel free to send me your requests
  ╙
 
-If you have found bugs or have feature requests feel free to contact me on github (https://github.com/stylesuxx/RIIG) or via mail (stylesuxx@gmail.com).
+If you find bugs or have feature requests feel free to contact me on github (https://github.com/stylesuxx/RIIG) or via mail (stylesuxx@gmail.com).
