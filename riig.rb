@@ -12,30 +12,58 @@ require './lib/options.rb'
 options = OptionParser.parse(ARGV)
 
 # Do for each url given as commandline argument
-# After parsing the options only url's are left in the ARGV array
+# After parsing there are only non options in the ARGV array
 ARGV.each do |url|
-  link = Url.new(url)
+  begin
+    page = Url.new(url)
+  rescue Exception => e
+    puts "Page down or no internet connection: #{url}"
+    next
+  end
     
   # If URL valid (valid board & valid formatting)
-  if link.valid
-    iWriter = ImageWriter.new(options.output, link.board, url, options.verbose)
-    iWriter.valid ? iWriter.saveImages : abort("Directory does not exist or you do not have write permissions")
+  if page.isValid
+    iWriter = ImageWriter.new(options.output, page.domain, page.board, page.thread)
     
-  # If URL NOT valid
+    # If directory exists and subdir was created
+    if iWriter.isValid
+
+      # Save each image from page
+      page.links.each do |image|
+	begin	
+	  status = iWriter.saveImage(page.getPath(image), page.getFilename(image))
+	  puts status if status != NIL && options.verbose
+	rescue
+	  puts "Image down or no internet connection: image"
+	  next
+	end
+      end
+      
+    else
+     abort("Output path does not exist or you do not have write permissions")
+    end
+
+  # If URL NOT valid skip to the next one
   else
-    puts "\"#{url}\" is not a valid url"
+    puts "\"#{url}\" url is malformatted or imageboard is not supported"
     next
   end
   
   # Output Stats
   !iWriter.new ? tmp = "new " : tmp = ""
-  puts "Saved #{iWriter.count} #{tmp}images to #{iWriter.dir}" if iWriter.count > 0
-  puts "No #{tmp}images in thread #{iWriter.thread}" if iWriter.count == 0
+  puts "Grabbed #{iWriter.count} #{tmp}images from thread #{page.thread} on #{page.board}" if iWriter.count > 0
+  puts "No #{tmp}images in thread #{page.thread} on #{page.board}" if iWriter.count == 0
   
   # Zip images
-  iWriter.zip if options.zip
+  if options.zip
+    status = iWriter.zip
+    puts status if options.verbose
+  end
   
-  # Delete images only if files have been zipped
-  iWriter.del if options.del && options.zip
-  
+  # Delete images - only if files have been zipped too
+  if options.del && options.zip
+    status = iWriter.del
+    puts status if options.verbose
+  end
+
 end if !options.help # each url
