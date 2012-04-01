@@ -3,20 +3,19 @@ require 'uri'
 require 'fileutils'
 
 class ImageWriter
-  attr_reader :url, :dir, :board, :valid, :new, :thread, :links, :domain, :count, :verbose
+  attr_reader :dir, :count, :isValid, :new
   
-  def initialize(dir, board, url, verbose)
-    @dir = dir
-    @basedir = dir 
-    @url = url
+  def initialize(basedir, domain, board, thread)
+    @basedir = basedir
+    @dir = basedir + board + '_' + thread + '/'
+    @domain = domain
+    @count = 0
     @board = board
-    @valid = true
-    @verbose = verbose
-    setBoardVars
-    createDir()
+    @thread = thread
+    @isValid = createDir
   end
   
-  def createDir()
+  def createDir
     begin
       if !File.directory?(@dir)		# If dir does not exist
 	Dir.mkdir @dir
@@ -25,61 +24,15 @@ class ImageWriter
 	@new = false
       end
     rescue 				# If output dir does not exist or user has no write permissions
-      @valid = false
+      return false
     end
+    return true
   end
-  
-  def setBoardVars()
-    case @board
-    when "4chan"
-      @thread = @url.gsub(/.*res\/([0-9]*)/, '\1')
-      @domain = "images.4chan.org"
-      @links = getHTML.scan(/File: <a href\="\/\/images.4chan.org\/[a-z0-9]*\/src\/[0-9]*.\w{3,4}"/)
-      @links = @links.map {|link| link.gsub(/.*"\/\/(.*)"/, '\1')}
-
-    else
    
-    end
-    @dir += @board + '_' + @thread
-  end
-  
-  # get boards HTML for parsing
-  def getHTML()
-    uri = URI.parse(@url)
-    response = Net::HTTP.get_response(uri)
-    # TODO check if response was OK
-    return Net::HTTP.get(uri)
-  end
-  
-  def getPath(link)    
-    case @board
-    when "4chan"
-      return link.gsub(/images.4chan.org\/(.*)/, '/\1')
-    else 
-      return NIL
-    end
-  end
-    
-  def getFilename(link)
-    case @board
-    when "4chan"	  
-      return @dir + '/' + getPath(link).gsub(/^.*\/([0-9]*\.\w{3,4}$)/, '\1')
-    else 
-      return NIL
-    end
-  end
-  
-  def saveImages()
-    @count = 0
-    @links.each do |link| 
-      saveImage(getPath(link), getFilename(link))
-    end
-  end
-  
   # delete folder
   def del()
     FileUtils.rm_rf @dir
-    puts "Images deleted from: #{@dir}"
+    return "Deleted #{@dir}"
   end
   
   # create zipfile
@@ -98,19 +51,21 @@ class ImageWriter
 	zipfile.add(@board + '_' + @thread + '/' + file, @dir+'/'+file) if file != "." && file != ".." 
       end
     end
-    puts "Zip file created: #{zipfile}" if verbose
+    return "Zip file created: #{zipfile}"
   end
   
   def saveImage(path, filename)
-    if !File.exist? filename
+    if !File.exist? @dir + filename
       Net::HTTP.start(@domain) do |http|
 	resp = http.get(path)
-	open(filename, "wb") do |file|
-	  puts "Saving #{@domain + path} to #{filename}" if verbose
+	open(@dir + filename, "wb") do |file|
 	  file.write(resp.body)
 	  @count += 1
+	  return "Saved #{@domain + path} to #{@dir + filename}"
 	end
+	return "Something went wrong while saving #{@dir + filename}"
       end
+      return NIL
     end
   end
   
