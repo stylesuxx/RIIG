@@ -24,14 +24,6 @@ class Url
     return true
   end
   
-  # Get the pages content
-  def getHTML
-    uri = URI.parse(@url)
-    response = Net::HTTP.get_response(uri)
-    # TODO check if response was OK
-    return Net::HTTP.get(uri)
-  end
-
   # Returns an array of image links
   # sets thread and domain vars
   def getLinks
@@ -49,8 +41,6 @@ class Url
     else
       return NIL
     end
-    # Folder where the images will be saved
-    #@dir += @board + '_' + @thread
     return @links
   end
   
@@ -73,6 +63,28 @@ class Url
       return link.gsub(/.*\.2chan\.net\/(.*)/, '/\1')     
     else 
       return NIL
+    end
+  end
+  
+  private
+  # Get the pages content or raise exception on http errors
+  def getHTML
+    uri = URI.parse(@url)
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    
+    response = http.request(request)
+
+    case response.code
+    when "200" 
+      response.body
+    when "404"
+      raise "Thread could not be found (404): #{uri.host + uri.request_uri}"
+    when "503"
+      raise "Resource temporary unavailable (503): #{uri.host + uri.request_uri}"
+    else 
+      raise "HTTP error (#{response.code}): #{uri.host + uri.request_uri}"
     end
   end
   
