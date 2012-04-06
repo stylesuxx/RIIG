@@ -2,26 +2,27 @@ require 'net/http'
 require 'uri'
 
 class Url  
-  attr_reader :url, :board, :isValid, :thread, :domain, :links
+  attr_reader :url, :board, :thread, :domain, :links
     
   def initialize(url)
     @url = url
-    @isValid = checkValid
-    getLinks if @isValid
+    checkValid
+    getLinks
   end
     
-  # Check if the url is from a board we are able to grab
+  # Check if the url is from a board we are able to grab, otherwise raise an exception
   def checkValid
     case @url
-    # 4chan
+    # 4chan.org
     when /((^http:\/\/)?boards\.4chan\.org\/)[a-z0-9]*\/res\/[0-9]*/
-      @board = "4chan"    
+      @board = "4chan"
+    # 2chan.net
     when /((^http:\/\/)?\w{3}\.2chan\.net\/)[a-z0-9]*\/res\/[0-9]*\.htm/
       @board = "2chan"
+    # Malformatted URL or imageboard not supported
     else
-      return false
+      raise "'#{@url}' is malformatted or imageboard ist not supported"
     end
-    return true
   end
   
   # Returns an array of image links
