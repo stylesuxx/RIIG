@@ -9,44 +9,38 @@ require './lib/imagewriter.rb'
 require './lib/options.rb'
 
 # Set the commandline options - displays help in case of fuckup
+# After parsing there are only non options (aka URL's to grab) in the ARGV array
 options = OptionParser.parse(ARGV)
 
 # Do for each url given as commandline argument
-# After parsing there are only non options in the ARGV array
 ARGV.each do |url|
   begin
     page = Url.new(url)
+    
+  # When there is an HTTP error or Board is not supported print exception message and skip to the next URL 
   rescue Exception => e
-    puts "Page down or no internet connection: #{url}"
+    puts e.message
     next
   end
     
-  # If URL valid (valid board & valid formatting)
-  if page.isValid
-    iWriter = ImageWriter.new(options.output, page.domain, page.board, page.thread)
+  iWriter = ImageWriter.new(options.output, page.domain, page.board, page.thread)
     
-    # If directory exists and subdir was created
-    if iWriter.isValid
+  # If directory exists and subdir was created
+  if iWriter.isValid
 
-      # Save each image from page
-      page.links.each do |image|
-	begin	
-	  status = iWriter.saveImage(page.getPath(image), page.getFilename(image))
-	  puts status if status != NIL && options.verbose
-	rescue
-	  puts "Image down or no internet connection: image"
-	  next
-	end
+    # Save each image from page
+    page.links.each do |image|
+      begin	
+	status = iWriter.saveImage(page.getPath(image), page.getFilename(image))
+	puts status if status != NIL && options.verbose
+      rescue
+	puts "Image down or no internet connection: image"
+	next
       end
-      
-    else
-     abort("Output path does not exist or you do not have write permissions")
     end
-
-  # If URL NOT valid skip to the next one
+      
   else
-    puts "\"#{url}\" url is malformatted or imageboard is not supported"
-    next
+   abort("Output path does not exist or you do not have write permissions")
   end
   
   # Output Stats
